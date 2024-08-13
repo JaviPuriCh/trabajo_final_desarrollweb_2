@@ -1,0 +1,105 @@
+    <div class="row my-2">
+        <div class="col-lg-8">
+            <!-- Listado de autor-->
+            <div class="card mb-4">
+                <div class="surface-overlay border-round border-1 my-3 p-2">
+                    <h4>Lista de Autores</h4>
+                    <div class="card">
+                        <p-table
+                            #dtAutor
+                            [value]="autores"
+                            [paginator]="true"
+                            [rows]="5"
+                            [showCurrentPageReport]="true"
+                            [tableStyle]="{ 'min-width': '30rem' }"
+                            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+                            [globalFilterFields]="['nombre', 'apellidos']"
+                            [rowsPerPageOptions]="[10, 25, 50]"
+                        >
+                        <ng-template pTemplate="caption">
+                            <div class="flex" style="text-align: right;">
+                                <span class="p-input-icon-left ml-auto">
+                                    <i class="pi pi-search"></i>
+                                    <input pInputText type="text" (input)="dtAutor.filterGlobal($any($event.target).value!, 
+                                    'contains')"  placeholder="Search keyword" />
+                                </span>
+                            </div>
+                        </ng-template>
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th pSortableColumn="nombre" style="width:45%">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+                                    <th pSortableColumn="apellidos" style="width:45%">Apellidos<p-sortIcon field="apellidos"></p-sortIcon></th>
+                                    <th style="width:5%"></th><th style="width:5%"></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-autores>
+                                <tr>
+                                    <td>{{ autores.nombre }}</td>
+                                    <td>{{ autores.apellidos }}</td>
+                                    <td><p-button icon="pi pi-pencil" [rounded]="true" [text]="true" (onClick)="editarUnAutor(autores)"></p-button></td>
+                                    <td><p-button icon="pi pi-trash" [rounded]="true" [text]="true" (onClick)="eliminarAutor(autores._id)"></p-button></td>
+                                </tr>
+                            </ng-template>
+                        </p-table> 
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Formulario Autor-->
+            <div class="card mb-4">
+                <div class="card-header" style="font-size: large;">
+                    <b class="pi pi-user mr-2" style="font-size: 1.5rem" ></b>
+                    <span style="padding: 3px;">Ingreso de Autor</span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form #autorForm="ngForm" class="field grid mx-auto">
+                                <div class="row mb-3 col-md-12">
+                                    <div>
+                                        <label for="colFormLabelSm" class="col-md-12 col-form-label">Nombre:</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input type="text" name="nombre" pInputText style="width: 100%;" 
+                                        #inputNombre autofocus [(ngModel)]="newAutor.nombre" inputNombre/>
+                                        <!-- <div class="error" *ngIf="groupAutor.get('nombre')hasError('required') && groupAutor.get('nombre').touched">
+                                            Nombre requerido
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="row mb-3 col-md-12">
+                                    <div>
+                                        <label for="colFormLabelSm" class="col-md-12 col-form-label">Apellidos:</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input type="text" pInputText name="apellidos" style="width: 100%;"
+                                         #inputApellidos [(ngModel)]="newAutor.apellidos" inputApellidos/>
+                                    </div>
+                                </div>
+                                <div class="col-auto offset-md-2">
+                                    <div *ngIf="btnActivo">
+                                        <p-button pButton pRipple  (click)="crearAutor(newAutor)"
+                                        [rounded]="true">
+                                        Grabar
+                                    </p-button>
+                                    </div>
+                                    <div *ngIf="!btnActivo">
+                                        <p-button pButton pRipple  (click)="actualizarAutor(newAutor._id, newAutor)"
+                                        [rounded]="true">
+                                        Actualizar
+                                    </p-button>
+                                    </div>
+                                    
+                                    <br>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

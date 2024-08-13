@@ -1,0 +1,108 @@
+<div class="row my-2">
+    <div class="col-lg-8">
+        <!-- Listado de libro-->
+        <div class="card mb-4">
+            <div class="surface-overlay border-round border-1 my-3 p-2">
+                <h4>Lista de libros</h4>
+                <div class="card">
+                    <p-table
+                        #dtlibro
+                        [value]="libros"
+                        styleClass="p-datatable-striped"
+                        [paginator]="true"
+                        [rows]="5"
+                        [showCurrentPageReport]="true"
+                        [tableStyle]="{ 'min-width': '30rem' }"
+                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+                        [globalFilterFields]="['titulo', 'editorial', 'isbn']"
+                        [rowsPerPageOptions]="[10, 25, 50]"
+                    >
+                    <ng-template pTemplate="caption">
+                        <div class="flex" style="text-align: right;">
+                            <span class="p-input-icon-left ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dtlibro.filterGlobal($any($event.target).value!, 
+                                'contains')"  placeholder="Search keyword" />
+                            </span>
+                        </div>
+                    </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="titulo" style="width:40%">Titulo<p-sortIcon field="titulo"></p-sortIcon></th>
+                                <th pSortableColumn="editorial" style="width:30%">Editorial<p-sortIcon field="editorial"></p-sortIcon></th>
+                                <th pSortableColumn="isbn" style="width:20%">ISBN<p-sortIcon field="isbn"></p-sortIcon></th>
+                                <th style="width:5%"></th><th style="width:5%"></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-libros>
+                            <tr>
+                                <td>{{ libros.titulo }}</td>
+                                <td>{{ libros.editorial }}</td>
+                                <td>{{ libros.isbn }}</td>
+                                <td><p-button icon="pi pi-pencil" [rounded]="true" [text]="true" (onClick)="editarUnLibro(libros)"></p-button></td>
+                                <td><p-button icon="pi pi-trash" [rounded]="true" [text]="true" (onClick)="eliminarLibro(libros._id)"></p-button></td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <!-- Formulario Libro-->
+         <div class="card mb-4">
+                <div class="card-header" style="font-size: large;" >
+                    <b class="pi pi-book mr-2" style="font-size: 1.5rem" ></b>
+                    <span style="padding: 3px;">Ingreso de Libro</span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form #libroForm="ngForm" class="field grid mx-auto">
+                                    <div class="row mb-3 col-md-12">
+                                        <label for="colFormLabelSm" class="col-md-12 col-form-label">Título:</label>
+                                        <div class="col-md-12">  
+                                            <input type="text" name="titulo" pInputText pKeyFilter="alpha"  style="width: 100%;" 
+                                            autofocus [(ngModel)] ="newLibro.titulo" inputTitulo/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 col-md-12">
+                                        <div>
+                                            <label for="colFormLabelSm" class="col-md-12 col-form-label">Editorial:</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input type="text"name="editorial" pInputText pKeyFilter="alpha"  style="width: 100%;" 
+                                             [(ngModel)]="newLibro.editorial" inputEditorial/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 col-md-12">
+                                        <div>
+                                            <label for="colFormLabelSm" class="col-md-12 col-form-label">ISBN:</label>
+                                        </div>  
+                                        <div class="col-md-12">
+                                            <input type="text" name="isbn" pInputText pKeyFilter="alpha" style="width: 100%;"
+                                            [(ngModel)]="newLibro.isbn" inputIsbn/>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto offset-md-2">
+                                        <div *ngIf="btnActivo">
+                                            <p-button pRipple icon="pi pi-save" [rounded]="true"  label="Gabar" 
+                                        (click)="crearLibro(newLibro)"></p-button>
+                                        </div>
+                                        <div *ngIf="!btnActivo">
+                                            <p-button pButton pRipple  (click)="actualizarLibro(newLibro._id, newLibro)"
+                                            [rounded]="true">
+                                            Actualizar
+                                        </p-button>
+                                        </div>
+                                        
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>  
+</div>
+
